@@ -1,6 +1,8 @@
 import styles from '../Product/Product.module.scss';
 import clsx from 'clsx';
 import Button from '../Button/Button';
+import OptionColor from '../OptionColor/OptionColor';
+import OptionSize from '../OptionSize/OptionSize';
 
 const ProductForm = ({
   setCurrentSize,
@@ -16,7 +18,19 @@ const ProductForm = ({
 }) => {
   return (
     <form>
-      <div className={styles.sizes}>
+      <OptionColor
+        setCurrentSize={setCurrentSize}
+        setCurrentPrice={setCurrentPrice}
+        currentSize={currentSize}
+        sizes={sizes}
+      />
+      <OptionSize
+        setCurrentColor={setCurrentColor}
+        prepareColorClassName={prepareColorClassName}
+        colors={colors}
+        currentColor={currentColor}
+      />
+      {/* <div className={styles.sizes}>
         <h3 className={styles.optionLabel}>Sizes</h3>
         <ul className={styles.choices}>
           {sizes.map((size) => (
@@ -34,8 +48,8 @@ const ProductForm = ({
             </li>
           ))}
         </ul>
-      </div>
-      <div className={styles.colors}>
+      </div> */}
+      {/* <div className={styles.colors}>
         <h3 className={styles.optionLabel}>Colors</h3>
         <ul className={styles.choices}>
           {colors.map((color) => (
@@ -51,7 +65,7 @@ const ProductForm = ({
             </li>
           ))}
         </ul>
-      </div>
+      </div> */}
       <Button
         className={styles.button}
         color={currentColor}
