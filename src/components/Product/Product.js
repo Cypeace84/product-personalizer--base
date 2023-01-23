@@ -2,6 +2,7 @@ import styles from './Product.module.scss';
 import clsx from 'clsx';
 import Button from '../Button/Button';
 import ProductImage from '../ProductImage/ProductImage';
+import ProductForm from '../ProductForm/ProductForm';
 import { useState } from 'react';
 
 const Product = (props) => {
@@ -40,7 +41,19 @@ const Product = (props) => {
           <h2 className={styles.name}>{props.title}</h2>
           <span className={styles.price}>{getPrice()}$</span>
         </header>
-        <form>
+        <ProductForm
+          prepareColorClassName={prepareColorClassName}
+          getPrice={getPrice}
+          setCurrentSize={setCurrentSize}
+          setCurrentPrice={setCurrentPrice}
+          setCurrentColor={setCurrentColor}
+          sizes={props.sizes}
+          colors={props.colors}
+          currentColor={currentColor}
+          currentSize={currentSize}
+          title={props.title}
+        />
+        {/* <form>
           <div className={styles.sizes}>
             <h3 className={styles.optionLabel}>Sizes</h3>
             <ul className={styles.choices}>
@@ -86,7 +99,7 @@ const Product = (props) => {
           >
             <span className='fa fa-shopping-cart' />
           </Button>
-        </form>
+        </form> */}
       </div>
     </article>
   );
