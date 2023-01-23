@@ -1,30 +1,44 @@
 import styles from './Product.module.scss';
 import clsx from 'clsx';
 import Button from '../Button/Button';
+import ProductImage from '../ProductImage/ProductImage';
 import { useState } from 'react';
 
 const Product = (props) => {
   console.log(props);
-  const [currentColor] = useState(props.colors[0]);
+  const [currentColor, setCurrentColor] = useState(props.colors[0]);
   const [currentSize, setCurrentSize] = useState(props.sizes[0].name);
+  const [currentPrice, setCurrentPrice] = useState(
+    props.sizes[0].additionalPrice
+  );
   // const [isActive, setIsActive] = useState(false);
 
   console.log('currentColor', currentColor);
   console.log('currentSize', currentSize);
+  console.log('currentPrice', currentPrice);
+
+  const prepareColorClassName = (color) => {
+    return styles[
+      'color' + color[0].toUpperCase() + color.substr(1).toLowerCase()
+    ];
+  };
+
+  const getPrice = () => {
+    return currentPrice + props.basePrice;
+  };
 
   return (
     <article className={styles.product}>
-      <div className={styles.imageContainer}>
-        <img
-          className={styles.image}
-          alt={props.title}
-          src={`${process.env.PUBLIC_URL}/images/products/shirt-${props.name}--${currentColor}.jpg`}
-        />
-      </div>
+      <ProductImage
+        title={props.title}
+        name={props.name}
+        color={currentColor}
+      />
+
       <div>
         <header>
           <h2 className={styles.name}>{props.title}</h2>
-          <span className={styles.price}>{props.basePrice}</span>
+          <span className={styles.price}>{getPrice()}$</span>
         </header>
         <form>
           <div className={styles.sizes}>
@@ -33,8 +47,10 @@ const Product = (props) => {
               {props.sizes.map((size) => (
                 <li key={size.name}>
                   <button
-                    // className={isActive && styles.active}
-                    onClick={(e) => setCurrentSize(size.name)}
+                    onClick={(e) => {
+                      setCurrentSize(size.name);
+                      setCurrentPrice(size.additionalPrice);
+                    }}
                     className={clsx(currentSize === size.name && styles.active)}
                     type='button'
                   >
@@ -42,41 +58,32 @@ const Product = (props) => {
                   </button>
                 </li>
               ))}
-
-              {/* <li>
-                <button type='button' className={styles.active}>
-                  S
-                </button>
-              </li>
-              <li>
-                <button type='button'>M</button>
-              </li>
-              <li>
-                <button type='button'>L</button>
-              </li>
-              <li>
-                <button type='button'>XL</button>
-              </li> */}
             </ul>
           </div>
           <div className={styles.colors}>
             <h3 className={styles.optionLabel}>Colors</h3>
             <ul className={styles.choices}>
-              <li>
-                <button
-                  type='button'
-                  className={clsx(styles.colorBlack, styles.active)}
-                />
-              </li>
-              <li>
-                <button type='button' className={clsx(styles.colorRed)} />
-              </li>
-              <li>
-                <button type='button' className={clsx(styles.colorWhite)} />
-              </li>
+              {props.colors.map((color) => (
+                <li key={color}>
+                  <button
+                    onClick={(e) => setCurrentColor(color)}
+                    className={clsx(
+                      prepareColorClassName(color),
+                      currentColor === color && styles.active
+                    )}
+                    type='button'
+                  ></button>
+                </li>
+              ))}
             </ul>
           </div>
-          <Button className={styles.button}>
+          <Button
+            className={styles.button}
+            color={currentColor}
+            size={currentSize}
+            price={getPrice()}
+            name={props.title}
+          >
             <span className='fa fa-shopping-cart' />
           </Button>
         </form>
